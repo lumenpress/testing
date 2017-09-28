@@ -1,0 +1,8 @@
+{
+    "name": "lumenpress/testing",
+    "autoload": {
+        "psr-4": {
+            "LumenPress\\Testing\\": "src"
+        }
+    }
+}

@@ -6,11 +6,15 @@
  */
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
 
-$config_file_path = $argv[1];
-$multisite = ! empty($argv[2]);
+if (! getenv('WP_TESTS_CONFIG_PATH')) {
+    putenv('WP_TESTS_CONFIG_PATH='.__DIR__.'/../wp-tests-config.php');
+}
+
+$multisite = ! empty($argv[1]);
 
 define('WP_INSTALLING', true);
-require_once $config_file_path;
+
+require_once getenv('WP_TESTS_CONFIG_PATH');
 require_once dirname(__FILE__).'/functions.php';
 
 // Set the theme to our special empty theme, to avoid interference from the current Twenty* theme.
@@ -71,6 +75,7 @@ wp_install(WP_TESTS_TITLE, 'admin', WP_TESTS_EMAIL, true, null, 'password');
 if (! is_multisite()) {
     delete_option('permalink_structure');
 }
+
 remove_action('populate_options', '_set_default_permalink_structure_for_tests');
 
 if ($multisite) {

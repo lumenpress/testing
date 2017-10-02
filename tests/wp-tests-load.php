@@ -1,16 +1,8 @@
 <?php
-
 /**
  * Installs WordPress for running the tests and loads WordPress and the test libraries.
  */
-if (! defined('WP_TESTS_CONFIG_FILE_PATH')) {
-    define('WP_TESTS_CONFIG_FILE_PATH', __DIR__.'/../wp-tests-config.php');
-}
 
-if (! is_readable(WP_TESTS_CONFIG_FILE_PATH)) {
-    echo "ERROR: wp-tests-config.php is missing! Please use wp-tests-config-sample.php to create a config file.\n";
-    exit(1);
-}
 
 /*
  * Globalize some WordPress variables, because PHPUnit loads this file inside a function
@@ -18,15 +10,14 @@ if (! is_readable(WP_TESTS_CONFIG_FILE_PATH)) {
  */
 global $wpdb, $current_site, $current_blog, $wp_rewrite, $shortcode_tags, $wp, $phpmailer, $wp_theme_directories;
 
-require_once WP_TESTS_CONFIG_FILE_PATH;
-require_once dirname(__FILE__).'/functions.php';
+if (! getenv('WP_TESTS_CONFIG_PATH')) {
+    putenv('WP_TESTS_CONFIG_PATH='.__DIR__.'/wp-tests-config.php');
+}
+
+require_once getenv('WP_TESTS_CONFIG_PATH');
+require_once __DIR__.'/includes/functions.php';
 
 tests_reset__SERVER();
-
-define('WP_TESTS_TABLE_PREFIX', $table_prefix);
-define('DIR_TESTDATA', dirname(__FILE__).'/../data');
-
-define('WP_LANG_DIR', DIR_TESTDATA.'/languages');
 
 if (! defined('WP_TESTS_FORCE_KNOWN_BUGS')) {
     define('WP_TESTS_FORCE_KNOWN_BUGS', false);
@@ -42,31 +33,15 @@ define('REST_TESTS_IMPOSSIBLY_HIGH_NUMBER', 99999999);
 
 $PHP_SELF = $GLOBALS['PHP_SELF'] = $_SERVER['PHP_SELF'] = '/index.php';
 
-// Should we run in multisite mode?
-$multisite = '1' == getenv('WP_MULTISITE');
-$multisite = $multisite || (defined('WP_TESTS_MULTISITE') && WP_TESTS_MULTISITE);
-$multisite = $multisite || (defined('MULTISITE') && MULTISITE);
-
 // Override the PHPMailer
-require_once dirname(__FILE__).'/mock-mailer.php';
+require_once __DIR__.'/includes/mock-mailer.php';
 $phpmailer = new MockPHPMailer(true);
 
 if (! defined('WP_DEFAULT_THEME')) {
     define('WP_DEFAULT_THEME', 'default');
 }
-$wp_theme_directories = [DIR_TESTDATA.'/themedir1'];
 
-system(WP_PHP_BINARY.' '.escapeshellarg(dirname(__FILE__).'/install.php').' '.escapeshellarg(WP_TESTS_CONFIG_FILE_PATH).' '.$multisite);
-
-// if ( $multisite ) {
-// 	echo "Running as multisite..." . PHP_EOL;
-// 	defined( 'MULTISITE' ) or define( 'MULTISITE', true );
-// 	defined( 'SUBDOMAIN_INSTALL' ) or define( 'SUBDOMAIN_INSTALL', false );
-// 	$GLOBALS['base'] = '/';
-// } else {
-// 	echo "Running as single site... To run multisite, use -c tests/phpunit/multisite.xml" . PHP_EOL;
-// }
-// unset( $multisite );
+$wp_theme_directories = [__DIR__.'/themedir'];
 
 $GLOBALS['_wp_die_disabled'] = false;
 // Allow tests to override wp_die
@@ -91,6 +66,6 @@ if (isset($GLOBALS['wp_tests_options'])) {
 require_once ABSPATH.'/wp-settings.php';
 
 // Delete any default posts & related data
-_delete_all_posts();
+// _delete_all_posts();
 
-require dirname(__FILE__).'/utils.php';
+require __DIR__.'/includes/utils.php';

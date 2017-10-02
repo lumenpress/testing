@@ -4,8 +4,7 @@
  * Installs WordPress for running the tests and loads WordPress and the test libraries.
  */
 if (! defined('WP_TESTS_CONFIG_FILE_PATH')) {
-    echo "ERROR: wp-tests-config.php is missing! Please use wp-tests-config-sample.php to create a config file.\n";
-    exit(1);
+    define('WP_TESTS_CONFIG_FILE_PATH', __DIR__.'/../wp-tests-config.php');
 }
 
 if (! is_readable(WP_TESTS_CONFIG_FILE_PATH)) {

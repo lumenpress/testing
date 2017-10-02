@@ -1,7 +1,7 @@
 <?php
 
 /* Path to the WordPress codebase you'd like to test. Add a forward slash in the end. */
-define('ABSPATH', dirname(__FILE__).'/src/');
+define('ABSPATH', __DIR__.'/../../../johnpbloch/wordpress-core/');
 
 /*
  * Path to the theme to test with.
@@ -31,14 +31,15 @@ define('WP_DEBUG', true);
 // These tests will DROP ALL TABLES in the database with the prefix named below.
 // DO NOT use a production database or one that is shared with something else.
 
-define('DB_NAME', 'youremptytestdbnamehere');
-define('DB_USER', 'yourusernamehere');
-define('DB_PASSWORD', 'yourpasswordhere');
-define('DB_HOST', 'localhost');
+define('DB_NAME', getenv('DB_NAME') ?: 'wordpress');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASSWORD', getenv('DB_PASSWORD') ?: '');
+define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
 define('DB_CHARSET', 'utf8');
 define('DB_COLLATE', '');
 
-$table_prefix = 'wptests_';   // Only numbers, letters, and underscores please!
+// Only numbers, letters, and underscores please!
+$table_prefix = getenv('DB_PREFIX') ?: 'wptests_';
 
 define('WP_TESTS_DOMAIN', 'example.org');
 define('WP_TESTS_EMAIL', 'admin@example.org');

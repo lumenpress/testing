@@ -4,5 +4,8 @@
         "psr-4": {
             "LumenPress\\Testing\\": "src"
         }
+    },
+    "require": {
+        "johnpbloch/wordpress-core": "^4.8"
     }
 }

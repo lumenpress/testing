@@ -31,10 +31,10 @@ define('WP_DEBUG', true);
 // These tests will DROP ALL TABLES in the database with the prefix named below.
 // DO NOT use a production database or one that is shared with something else.
 
-define('DB_NAME', getenv('DB_NAME') ?: 'wordpress');
-define('DB_USER', getenv('DB_USER') ?: 'root');
-define('DB_PASSWORD', getenv('DB_PASSWORD') ?: '');
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+define('DB_NAME', getenv('DB_DATABASE') ?: 'wordpress');
+define('DB_USER', getenv('DB_USERNAME') ?: 'root');
+define('DB_PASSWORD', getenv('DB_PASSWORD') ?: '');
 define('DB_CHARSET', 'utf8');
 define('DB_COLLATE', '');
 

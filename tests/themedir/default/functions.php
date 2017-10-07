@@ -1,14 +1,13 @@
 <?php
 
 /**
- * Laravel - A PHP Framework For Web Artisans
+ * Laravel - A PHP Framework For Web Artisans.
  */
-
 if (! defined('LP_THEME_DIR')) {
     return;
 }
 
-putenv('APP_DEBUG='.(WP_DEBUG?'true':'false'));
+putenv('APP_DEBUG='.(WP_DEBUG ? 'true' : 'false'));
 putenv('DB_CONNECTION=mysql');
 putenv('DB_HOST='.DB_HOST);
 putenv('DB_DATABASE='.DB_NAME);
@@ -60,12 +59,13 @@ $app = require_once LP_THEME_DIR.'bootstrap/app.php';
 */
 
 add_action('template_redirect', function () use ($app) {
-    if ( is_robots() || is_feed() || is_trackback() ) {
+    if (is_robots() || is_feed() || is_trackback()) {
         return;
     }
 
     if (stripos($app->version(), 'Lumen') !== false) {
         $app->run();
+
         return;
     }
 

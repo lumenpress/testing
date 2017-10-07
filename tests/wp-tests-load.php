@@ -3,7 +3,6 @@
  * Installs WordPress for running the tests and loads WordPress and the test libraries.
  */
 
-
 /*
  * Globalize some WordPress variables, because PHPUnit loads this file inside a function
  * See: https://github.com/sebastianbergmann/phpunit/issues/325

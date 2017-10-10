@@ -68,3 +68,5 @@ require_once ABSPATH.'/wp-settings.php';
 // _delete_all_posts();
 
 require __DIR__.'/includes/utils.php';
+
+putenv('APP_TIMEZONE='.(get_option('timezone_string') ?: 'UTC'));

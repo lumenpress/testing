@@ -2,7 +2,7 @@
 
 namespace LumenPress\Testing;
 
-trait WordPressTestCase
+trait WordPressTrait
 {
     /**
      * Modify WordPress's query internals as if a given URL has been requested.

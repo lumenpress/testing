@@ -1,5 +1,18 @@
 <?php
 
+foreach ([
+    'APP_DEBUG' => true,
+    'DB_HOST' => 'localhost',
+    'DB_DATABASE' => 'wordpress',
+    'DB_USERNAME' => 'root',
+    'DB_PASSWORD' => '',
+    'DB_PREFIX' => 'wptests_',
+] as $key => $value) {
+    if (! getenv($key)) {
+        putenv("$key=$value");
+    }
+}
+
 /* Path to the WordPress codebase you'd like to test. Add a forward slash in the end. */
 define('ABSPATH', __DIR__.'/../../../johnpbloch/wordpress-core/');
 
@@ -20,7 +33,7 @@ define('WP_DEFAULT_THEME', 'default');
 // define( 'WP_TESTS_FORCE_KNOWN_BUGS', true );
 
 // Test with WordPress debug mode (default).
-define('WP_DEBUG', true);
+define('WP_DEBUG', getenv('APP_DEBUG') === 'true' ? true : false);
 
 // ** MySQL settings ** //
 
@@ -31,15 +44,15 @@ define('WP_DEBUG', true);
 // These tests will DROP ALL TABLES in the database with the prefix named below.
 // DO NOT use a production database or one that is shared with something else.
 
-define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
-define('DB_NAME', getenv('DB_DATABASE') ?: 'wordpress');
-define('DB_USER', getenv('DB_USERNAME') ?: 'root');
-define('DB_PASSWORD', getenv('DB_PASSWORD') ?: '');
+define('DB_HOST', getenv('DB_HOST'));
+define('DB_NAME', getenv('DB_DATABASE'));
+define('DB_USER', getenv('DB_USERNAME'));
+define('DB_PASSWORD', getenv('DB_PASSWORD'));
 define('DB_CHARSET', 'utf8');
 define('DB_COLLATE', '');
 
 // Only numbers, letters, and underscores please!
-$table_prefix = getenv('DB_PREFIX') ?: 'wptests_';
+$table_prefix = getenv('DB_PREFIX');
 
 define('WP_TESTS_DOMAIN', 'example.org');
 define('WP_TESTS_EMAIL', 'admin@example.org');
